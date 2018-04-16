@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/bluetooth_image"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:src="@drawable/bluetooth_disabled"
+            android:layout_centerVertical="true"/>
+        <TextView
+            android:id="@+id/txtBltConnection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/bluetooth_image"
+            android:layout_centerVertical="true"
+            android:text="Waiting to connect"
+            android:textSize="10sp"/>
+
+        <TextView
+            android:id="@+id/frequency_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/txtBltConnection"
+            android:text="frequency:"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            />
+        <TextView
+            android:id="@+id/peak_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/txtBltConnection"
+            android:layout_below="@id/frequency_text"
+            android:text="peak-peak Voltage:"
+            android:layout_alignLeft="@id/frequency_text"
+            android:layout_marginTop="6dp"/>
+        <TextView
+            android:id="@+id/frequency_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/frequency_text"
+            android:layout_alignBaseline="@id/frequency_text"
+            android:text="0.0"
+            android:layout_marginLeft="5dp"
+            />
+        <TextView
+            android:id="@+id/frequency_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/frequency_value"
+            android:layout_alignBaseline="@id/frequency_value"
+            android:text="KHZ"
+            android:layout_marginLeft="3dp"/>
+
+        <TextView
+            android:id="@+id/peak_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/peak_text"
+            android:layout_alignBaseline="@id/peak_text"
+            android:text="0.0"
+            android:layout_marginLeft="5dp"/>
+        <TextView
+            android:id="@+id/peak_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/peak_value"
+            android:layout_alignBaseline="@id/peak_value"
+            android:text="V"
+            android:layout_marginLeft="3dp"/>
+
+        <TextView
+            android:id="@+id/txtVoltsDiv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/frequency_unit"
+            android:layout_marginTop="5dp"
+            android:text="volts/div: "
+            android:layout_marginLeft="60dp"/>
+        <EditText
+            android:id="@+id/voltsDivValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/txtVoltsDiv"
+            android:layout_marginLeft="5dp"
+            android:text="0.0"
+            android:textSize="10sp"
+            android:layout_marginTop="5dp"
+            android:layout_alignBaseline="@id/txtVoltsDiv"
+            android:inputType="numberDecimal"/>
+        <TextView
+            android:id="@+id/voltsDivUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/voltsDivValue"
+            android:layout_alignBaseline="@id/voltsDivValue"
+            android:layout_marginLeft="3dp"
+            android:text="V"/>
+
+        <TextView
+            android:id="@+id/txt_sweep_time_div"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtVoltsDiv"
+            android:layout_alignLeft="@id/txtVoltsDiv"
+            android:text="sweep time/div: "
+            android:layout_marginTop="6dp"/>
+
+        <EditText
+            android:id="@+id/sweep_time_div_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/txt_sweep_time_div"
+            android:layout_alignBaseline="@id/txt_sweep_time_div"
+            android:text="0.0"
+            android:textSize="10sp"
+            android:inputType="numberDecimal"/>
+        <TextView
+            android:id="@+id/sweep_time_div_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/sweep_time_div_value"
+            android:layout_alignBaseline="@id/sweep_time_div_value"
+            android:layout_marginLeft="3dp"
+            android:text="ms"/>
+
+        <TextView
+            android:id="@+id/txt_trig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/voltsDivUnit"
+            android:layout_marginTop="5dp"
+            android:layout_alignBaseline="@id/voltsDivUnit"
+            android:layout_marginLeft="70dp"
+            android:text="trig:"/>
+
+        <SeekBar
+            android:id="@+id/trigValue"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/txt_trig"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="3dp"/>
+
+    </RelativeLayout>
+
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5">
+
+    </com.github.mikephil.charting.charts.LineChart>
+
+
+</LinearLayout>

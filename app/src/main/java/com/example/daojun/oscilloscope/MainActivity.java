@@ -287,21 +287,24 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: open bluetooth");
-                if(mBluetoothAdapter.isEnabled()){
-                    if(mBluetoothConnetion!=null){
-                        if(mBluetoothConnetion.isConnected()){
-                            mProgressDialog = ProgressDialog.show(MainActivity.this,"Disonnecting Bluetooth","Please Wait....",true);
+
+                if(mBluetoothAdapter.isEnabled()) {
+                    if (mBluetoothConnetion != null) {
+                        if (mBluetoothConnetion.isConnected()) {
+                            mProgressDialog = ProgressDialog.show(MainActivity.this, "Disonnecting Bluetooth", "Please Wait....", true);
                             mBluetoothConnetion.resetConnection();
                             return;
                         }
                     }
-                    openBT();
+                }
+                openBT();
+                if(mBluetoothAdapter.isEnabled()){
+
                     discoverDevices();
 
                     if(lvNewDevicesLayout.getParent() != null){
                         ((ViewGroup)lvNewDevicesLayout.getParent()).removeView(lvNewDevicesLayout);
                     }
-
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                     mDeviceListDialog = builder.setTitle("Devices Found:")
                             .setView(lvNewDevicesLayout)

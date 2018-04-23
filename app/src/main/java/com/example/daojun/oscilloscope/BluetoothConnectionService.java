@@ -79,6 +79,11 @@ public class BluetoothConnectionService {
             }
 
             if(socket != null){
+                try {
+                    mmServerSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 connected(socket,mmDevice);
             }
         }
@@ -119,6 +124,8 @@ public class BluetoothConnectionService {
                 tmp = mmDevice.createRfcommSocketToServiceRecord(deviceUUID);
             } catch (IOException e) {
                 Log.e(TAG, "ConnectThread: Could not create InsecureRfcommSocket " + e.getMessage() );
+                progressDialog.dismiss();
+                return;
             }
 
             mmSocket = tmp;
@@ -148,6 +155,8 @@ public class BluetoothConnectionService {
 
                 }
                 Log.d(TAG, "run: ConnectThread: Could not connect to UUID: "+MY_UUID_INSECURE);
+                progressDialog.dismiss();
+                return;
             }
             //establish new thread for data transmition
             connected(mmSocket,mmDevice);

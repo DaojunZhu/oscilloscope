@@ -43,6 +43,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity  {
@@ -69,14 +70,16 @@ public class MainActivity extends AppCompatActivity  {
     BluetoothConnectionService mBluetoothConnetion;
     TextView txtBltConnection;
     private ProgressDialog mProgressDialog;
+    Set<BluetoothDevice> pairedDevices ;
 
     private static final UUID MY_UUID_INSECURE = UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
     BluetoothDevice mBTDevice;      //the remote device to be connect
 
-    //Debug blutooth connection
-//    Button btnSend;
-//    EditText editMsg;
-//    StringBuilder messages = new StringBuilder();
+    //////////////////////////Debug blutooth connection
+    Button btnSend;
+    EditText editMsg;
+    StringBuilder messages = new StringBuilder();
+    ////////////////////////////
 
 
     //create a broadcastReceiver for ACTION_FOUND
@@ -97,6 +100,7 @@ public class MainActivity extends AppCompatActivity  {
                         break;
                     case BluetoothAdapter.STATE_ON:
                         Log.d(TAG, "mBroadcastReceiver1: STATE ON");
+                        break;
                     case BluetoothAdapter.STATE_TURNING_ON:
                         Log.d(TAG, "mBroadcastReceiver1: STATE TURNING ON ");
                         break;
@@ -140,6 +144,7 @@ public class MainActivity extends AppCompatActivity  {
                 if(mDevice.getBondState() == BluetoothDevice.BOND_BONDED){
                     Log.d(TAG, "BroadcastReceiver: BOND_BONDED.");
                     mBTDevice = mDevice;
+                    startConnection();
                 }
                 //case 2: creating a bond
                 if(mDevice.getBondState() == BluetoothDevice.BOND_BONDING){
@@ -185,8 +190,8 @@ public class MainActivity extends AppCompatActivity  {
         @Override
         public void onReceive(Context context, Intent intent) {
             String text = intent.getStringExtra("theMessage");
-//            messages.append(text+"\n");
-//            editMsg.setText(messages);
+            messages.append(text+"\n");
+            editMsg.setText(messages);
         }
     };
 
@@ -228,11 +233,13 @@ public class MainActivity extends AppCompatActivity  {
             Log.d(TAG, "Device address: " + deviceAddress);
             if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2){
                 Log.d(TAG, "Trying to pair with " + deviceName);
-                mBTDevices.get(i).createBond();
-
-                mBTDevice = mBTDevices.get(i);
-                mBluetoothConnetion = new BluetoothConnectionService(MainActivity.this);
-                startConnection();
+                BluetoothDevice blt = mBTDevices.get(i);
+                mBTDevice = blt;
+                if(!pairedDevices.contains(blt)) {
+                    blt.createBond();
+                }else {
+                    startConnection();
+                }
             }
         }
     };
@@ -250,6 +257,15 @@ public class MainActivity extends AppCompatActivity  {
         lvNewDevices.setOnItemClickListener(mDeviceItemClickedHandler);
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        pairedDevices = mBluetoothAdapter.getBondedDevices();
+        mBluetoothConnetion = new BluetoothConnectionService(MainActivity.this);
+
+
+        /*************************************/
+         btnSend = (Button)findViewById(R.id.btn_send_msg);
+         editMsg = (EditText)findViewById(R.id.txt_send_msg);
+
+         /**********************************/
 
         //Broadcasts when bond state changes(ie: pairing)
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
@@ -316,6 +332,17 @@ public class MainActivity extends AppCompatActivity  {
                             })
                             .create();
                     mDeviceListDialog.show();
+                }
+            }
+        });
+
+        btnSend.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                String message = editMsg.getText().toString();
+                if(!message.isEmpty()){
+                    mBluetoothConnetion.write(message.getBytes(Charset.defaultCharset()));
+                    editMsg.setText("");
                 }
             }
         });
